@@ -47,10 +47,12 @@ while True:
     frame = vs.read()
     frame = imutils.resize(frame, width=720)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = np.expand_dims(gray, axis=2)
+    gray3 = np.concatenate([gray,gray,gray], axis=2)
  
     # grab the frame dimensions and convert it to a blob
     (h, w) = frame.shape[:2]
-    blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0,
+    blob = cv2.dnn.blobFromImage(cv2.resize(gray3, (300, 300)), 1.0,
         (300, 300), (104.0, 177.0, 123.0))
  
     # pass the blob through the network and obtain the detections and
