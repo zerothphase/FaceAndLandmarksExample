@@ -2,7 +2,6 @@
 # python detect_faces_video.py --prototxt deploy.prototxt.txt --model res10_300x300_ssd_iter_140000.caffemodel
 
 # import the necessary packages
-from imutils.video import VideoStream
 import numpy as np
 import argparse
 import imutils
@@ -34,7 +33,7 @@ net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
 
 # initialize the video stream and allow the cammera sensor to warmup
 print("[INFO] starting video stream...")
-vs = VideoStream(src=0).start()
+cap = cv2.VideoCapture(0)
 # fps = FPS().start()
 time.sleep(1.0)
 
@@ -44,7 +43,7 @@ while True:
     start = time.time()
     # grab the frame from the threaded video stream and resize it
     # to have a maximum width of 400 pixels
-    frame = vs.read()
+    _, frame = cap.read()
     frame = imutils.resize(frame, width=720)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     gray = np.expand_dims(gray, axis=2)
@@ -109,4 +108,4 @@ while True:
 
 # do a bit of cleanup
 cv2.destroyAllWindows()
-vs.stop()
+cap.release()
